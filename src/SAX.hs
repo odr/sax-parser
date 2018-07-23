@@ -417,7 +417,7 @@ skipTag' tag = do
   openTag tag
   skipUntil' (closeTag tag)
   pure ()
-{-# INLINE skipTag #-}
+{-# INLINE skipTag' #-}
 
 skipUntil :: SaxParser a -> SaxParser a
 skipUntil s = s <|> (skipAndMark >> skipUntil s)
