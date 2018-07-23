@@ -413,7 +413,7 @@ skipTag = skipTag'
 {-# INLINE skipTag #-}
 
 skipTag' :: XMLName name => name -> SaxParser ()
-skipTag tag = do
+skipTag' tag = do
   openTag tag
   skipUntil' (closeTag tag)
   pure ()
