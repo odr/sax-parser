@@ -408,7 +408,11 @@ atTag tag p = do
 {-# INLINE atTag #-}
 
 -- | Skips a tag and all of its children.
-skipTag :: ByteString -> SaxParser ()
+skipTag :: ByteString -> SaxParser()
+skipTag = skipTag'
+{-# INLINE skipTag #-}
+
+skipTag' :: XMLName name => name -> SaxParser ()
 skipTag tag = do
   openTag tag
   skipUntil' (closeTag tag)
