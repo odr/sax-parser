@@ -1,11 +1,11 @@
-{-# LANGUAGE DeriveFunctor #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE DeriveFunctor              #-}
+{-# LANGUAGE FlexibleContexts           #-}
+{-# LANGUAGE FlexibleInstances          #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE RankNTypes                 #-}
+{-# LANGUAGE ScopedTypeVariables        #-}
+{-# LANGUAGE TypeFamilies               #-}
 
 module SAX
   ( SaxStream
@@ -43,15 +43,15 @@ module SAX
 
 import           Control.Applicative
 import           Control.Monad.Fail
-import           Data.ByteString hiding (empty)
-import           Data.Semigroup hiding (Any)
+import           Data.ByteString     hiding (empty)
+import           Data.Semigroup      hiding (Any)
 import           Data.String
 import           Data.Word
-import           Debug.Tracy
-import           Prelude hiding (fail, concat, span)
+-- import           Debug.Tracy
+import           Prelude             hiding (concat, fail, span)
 import           SAX.Streaming
-import           Streaming hiding ((<>))
-import qualified Streaming.Prelude as S
+import           Streaming           hiding ((<>))
+import qualified Streaming.Prelude   as S
 import           Xeno.Types
 
 
@@ -68,9 +68,9 @@ data Result r
   deriving (Functor)
 
 instance Show r => Show (Result r) where
-  show (Fail s) = "Fail \"" ++ s ++ "\""
+  show (Fail s)        = "Fail \"" ++ s ++ "\""
   show (Partial _ _ _) = "Partial { <...> }"
-  show (Done r) = "Done " ++ show r
+  show (Done r)        = "Done " ++ show r
 
 newtype SaxParser a = SaxParser
   { runSaxParser :: forall r
@@ -149,7 +149,7 @@ peek = SaxParser $ \tst s _ k ->
 {-# INLINE peek #-}
 
 safeHead :: [a] -> Maybe (a, [a])
-safeHead [] = Nothing
+safeHead []     = Nothing
 safeHead (a:as) = Just (a, as)
 {-# INLINE safeHead #-}
 
@@ -302,7 +302,7 @@ anyAttr = SaxParser $ \tst s fk k ->
   case S.next s of
     Right (Right (event, s')) -> case event of
       Attr name val -> k tst s' (name, val)
-      _              -> fk tst s
+      _             -> fk tst s
     Right (Left e)            -> Fail (show e)
     Left _                    -> Fail "SAX stream exhausted"
 {-# INLINE anyAttr #-}
@@ -351,7 +351,7 @@ withTags'
   => [name]
   -> SaxParser a
   -> SaxParser a
-withTags' [] s = s
+withTags' [] s       = s
 withTags' (tag:tl) s = withTag' tag (withTags' tl s)
 {-# INLINE withTags' #-}
 
@@ -414,8 +414,8 @@ skipTag = skipTag'
 
 skipTag' :: XMLName name => name -> SaxParser ()
 skipTag' tag = do
-  openTag tag
-  skipUntil' (closeTag tag)
+  openTag' tag
+  skipUntil' (closeTag' tag)
   pure ()
 {-# INLINE skipTag' #-}
 
