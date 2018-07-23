@@ -34,6 +34,7 @@ module SAX
   , withTagAndAttrs'
   , withAttrs
   , skipTag
+  , skipTag'
   , skipAttr
   , atTag
   , streamXml
